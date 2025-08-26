@@ -1,0 +1,38 @@
+/* Write a function rightrot(x, n) that returns the value of the integer x rotated to the right by n bit positions. */
+#include <stdio.h>
+
+unsigned rightrot(unsigned x, int n) {
+
+    int word_size = sizeof(x) * 8;
+    // Step 1: Create a Mask for n bits.
+    unsigned mask = ~(~0 << n);  //0 complement is 1, whole complement will be 0111
+    // 10100110
+    // 00000111
+    mask = mask << (word_size - n);
+    // 11100000
+   // Step 2: Take the mask digits from x.
+    unsigned rotated_values = mask & x; 
+   // 10100000
+
+   // Step 3: Shift x to the right by n.
+    unsigned shift = x >> n;
+
+   // Step 4: Move the Rotated_values to the right side. To properly align with rotated digits.
+    rotated_values = rotated_values >> (word_size - n);
+
+   // Step 5: Add rotated-values and shift using OR operator.
+    unsigned rotated_output = rotated_values | shift;
+    return rotated_output;
+}
+
+int main() {
+    unsigned x = 128; 
+    int n = 24; 
+                    
+    unsigned result = rightrot(x, n);
+    printf("Word size is %d\n", sizeof(x) );
+    printf("Original x = %u\n", x);
+    printf(" %d : %u\n", n, result);
+
+    return 0;
+}
